@@ -4,9 +4,9 @@ desc "scrape sites"
   require 'open-uri'
 
   task :nepali_movie => :environment do
-# (2..12).each do |i|
-    # url = "http://www.isansar.com/movies/nepali_movies/page/#{i}"
-    url = "http://www.isansar.com/movies/nepali_movies"
+(2..12).each do |i|
+    url = "http://www.isansar.com/movies/nepali_movies/page/#{i}"
+    # url = "http://www.isansar.com/movies/nepali_movies"
     doc = Nokogiri::HTML(open(url))
 
     doc.css(".main-content article").each do |item|
@@ -38,7 +38,7 @@ desc "scrape sites"
       end
       Medium.create!({title: title, url: video, thumbnail: image, category: 'nepalimovie'})
     end
-# end
+end
     # Product.find_all_by_price(nil).each do |product|
     #   url = "http://www.walmart.com/search/search-ng.do?search_constraint=0&ic=48_0&search_query=#{CGI.escape(product.name)}&Find.x=0&Find.y=0&Find=Find"
     #   doc = Nokogiri::HTML(open(url))

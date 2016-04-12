@@ -46,5 +46,14 @@ group :development do
   gem 'pry-rails'
 end
 
+gem 'figaro'
+group :production do
+  # heroku
+  ruby "2.2.4"
+  gem 'rails_12factor'
+  gem 'rack-timeout'
+  gem 'newrelic_rpm'
+end
+
 gem 'nokogiri'
 gem 'active_model_serializers'
