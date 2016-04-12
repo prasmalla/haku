@@ -47,3 +47,4 @@ group :development do
 end
 
 gem 'nokogiri'
+gem 'active_model_serializers'
