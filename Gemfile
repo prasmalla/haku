@@ -57,3 +57,4 @@ end
 
 gem 'nokogiri'
 gem 'active_model_serializers'
+gem 'will_paginate'

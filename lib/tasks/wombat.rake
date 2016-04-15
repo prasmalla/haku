@@ -36,7 +36,12 @@ desc "scrape sites"
       else
         video = "http://www.youtube.com/watch?v=#{youtube[0][:href][/(?<=[?&]v=)[^&$]+/]}"
       end
-      Medium.create!({title: title, url: video, thumbnail: image, category: 'nepalimovie'})
+      title = title.gsub!(/[^0-9a-z ]|(nepali movie)|(full)/i, '')
+      begin
+        Medium.create!({title: title.squish, url: video, thumbnail: image, category: 'nepalimovie'})
+      rescue
+        #update existing record?
+      end
     end
 end
     # Product.find_all_by_price(nil).each do |product|
