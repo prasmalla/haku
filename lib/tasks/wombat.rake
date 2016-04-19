@@ -52,6 +52,54 @@ end
     # end
   end
 
+  task :nepali_news => :environment do
+    url = "http://www.canadanepal.info/dailynews/"
+    content = Nokogiri::HTML(open(url))
+    youtube = content.at_css('//iframe[@src*="youtube"]')[:src].split('/')[-1]
+    image = "http://img.youtube.com/vi/#{youtube}/default.jpg"
+    video = "http://www.youtube.com/watch?v=#{youtube}"
+    title = content.at_css('.st').text[2..-1].squish
+
+    Medium.where(category: 'nepalinews').delete_all #truncate
+    begin
+      Medium.create!({title: title, url: video, thumbnail: image, category: 'nepalinews'})
+    rescue
+      #update existing record?
+    end
+  end
+
+  task :nepali => :environment do
+    Medium.where(category: 'nepali').delete_all #truncate
+    url = "http://www.canadanepal.info/"
+    doc = Nokogiri::HTML(open(url))
+
+    doc.css("a").each_with_index do |link, i|
+      next if i < 11 #skip header links
+      page_url = link[:href]
+      begin
+        content = Nokogiri::HTML(open(page_url))
+      rescue
+        next #failed external link
+      end
+      iframe = content.at_css('//iframe[@src*="youtube"]')
+      next if !iframe
+      puts "#{i}-" + page_url
+      youtube = iframe[:src].split('/')[-1]
+      image = "http://img.youtube.com/vi/#{youtube}/default.jpg"
+      video = "http://www.youtube.com/watch?v=#{youtube}"
+      title = content.at_css('.post-title')
+      title = !title ? 'Untitled' : title.text.gsub!(/[^0-9a-z ]/i, '')
+      title = "Daily News" if i == 12
+      title = "Rasifal" if i == 14
+      begin
+        Medium.create!({title: title.squish, url: video, thumbnail: image, category: 'nepali'})
+      rescue
+        #update existing record?
+      end
+    end
+    # end
+  end
+
   task :nepali_tv => :environment do
 # (2..12).each do |i|
 
