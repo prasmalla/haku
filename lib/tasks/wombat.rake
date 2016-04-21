@@ -100,6 +100,29 @@ end
     # end
   end
 
+  task :live_tv => :environment do
+    channels = [
+      ['eurosport', 'http://esioslive6-i.akamaihd.net/hls/live/202874/AL_P_ESP1_INTER_ENG/playlist_1800.m3u8'],
+      ['vevo tv', 'http://vevoplaylist-live.hls.adaptive.level3.net/vevo/ch2/05/prog_index.m3u8'],
+      ['VEVO Hip Hop', 'http://vevoplaylist-live.hls.adaptive.level3.net/vevo/ch2/appleman.m3u8'],
+      ['ABC News', 'http://abclive.abcnews.com/i/abc_live4@136330/index_1200_av-b.m3u8'],
+      ['CBSN HD' , 'http://cbsnews-linear.mdialog.com/video_assets/cbsnews.m3u8?api_key=563b80c1ae4ce359830f572d2496a947&iu=/8264/vaw-can/mobile_web/cbsnews_mobile'],
+      ['SKY SPORTS 1' , 'http://51.255.81.190:8080/UK-Sky-Sports-1/mono.m3u8?token=3uvk_1xf83'],
+      ['SKY SPORTS 2', 'http://51.255.81.190:8080/UK-Sky-Sports-2/mono.m3u8?token=3uvk_1xf83'],
+      ['SKY SPORTS 3', 'http://51.255.81.190:8080/UK-Sky-Sports-3/mono.m3u8?token=3uvk_1xf83'],
+      ['SKY SPORTS 4', 'http://51.255.81.190:8080/UK-Sky-Sports-4/mono.m3u8?token=3uvk_1xf83'],
+      ['SKY SPORTS 5' ,'http://51.255.81.190:8080/UK-Sky-Sports-5/mono.m3u8?token=3uvk_1xf83']
+    ]
+    Medium.where(category: 'livetv').delete_all #truncate
+    channels.each do |channel|
+      begin
+        Medium.create!({title: channel[0], url: channel[1], thumbnail: 'default.png', category: 'livetv'})
+      rescue
+        #update existing record?
+      end
+    end
+  end
+
   task :nepali_tv => :environment do
 # (2..12).each do |i|
 
