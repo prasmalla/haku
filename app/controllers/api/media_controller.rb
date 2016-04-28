@@ -1,6 +1,6 @@
 class Api::MediaController < ApplicationController
   def start
-    render text: 'start here'
+    render text: Medium.uniq.pluck(:category)
   end
 
   def index
